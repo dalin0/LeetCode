@@ -1,0 +1,37 @@
+/**
+ * 解法二： 使用HashSet，运用滑动窗口解法
+ * @过程：  1、循环遍历
+ *          2、先判断 set 中是否有当前字符，若没有就将其添加进 set 中，然后right++，length++，比较length和max_len的最大值赋予max_len
+ *          3、若 set 中有该字符，则开始判断 left 下标处的字符，从 left 处开始删除，直到 set中没有 right 出的字符， left--，length--
+ *          4、直到 set 中没有 right 处的字符时跳出循环，这时将 right 处的字符加入 set 中， length++, right++
+ *          5、一次循环结束
+ * @return
+ */
+class Solution{
+    public:
+    int lengthOfLongestSubstring(string s) {
+        int length = 0, max_len = 0, left = 0, right = 0;
+        set<char> set;
+        while(right < s.length()){
+            if(set.find(s[right]) == set.end()){
+                set.insert(s[right]);
+                length++;
+                if(length > max_len){
+                    max_len = length;
+                }
+                right++;
+            }
+            else{
+                while(set.find(s[right]) != set.end()){
+                    set.erase(s[left]);
+                    left++;
+                    length--;
+                }
+                set.insert(s[right]);
+                length++;
+                right++;
+            }
+        }
+        return max_len;
+    }
+};
